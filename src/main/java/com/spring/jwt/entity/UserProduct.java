@@ -1,12 +1,17 @@
 package com.spring.jwt.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
-@Table(name = "userProduct")
+@Table(name = "user_product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +20,6 @@ public class UserProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @OneToMany
     private Integer userProductId;
 
     @Column(nullable = false)
@@ -45,7 +49,9 @@ public class UserProduct {
     @Column(nullable = false)
     private Integer stock2Liter;
 
-    @ManyToMany
-    @JoinColumn(name = "UserId")
-    private User user;
+    @Column(nullable = false)
+    private Integer userId;
+
+    @OneToMany(mappedBy = "userProduct01")
+    private Set<StockTransaction> stockTransactions = new LinkedHashSet<>();
 }

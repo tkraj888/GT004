@@ -1,4 +1,5 @@
 package com.spring.jwt.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,13 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "stock_transaction")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class StockTransaction {
 
     @Id
@@ -33,22 +34,22 @@ public class StockTransaction {
     private TransactionType transactionType; // CREDIT or DEBIT
 
     @Column(nullable = false)
-    private Integer quantity90ml; // Quantity in milliliters for 90ml
+    private Integer quantity90ml;
 
     @Column(nullable = false)
-    private Integer quantity180ml; // Quantity in milliliters for 180ml
+    private Integer quantity180ml;
 
     @Column(nullable = false)
-    private Integer quantity360ml; // Quantity in milliliters for 360ml
+    private Integer quantity360ml;
 
     @Column(nullable = false)
-    private Integer quantity760ml; // Quantity in milliliters for 760ml
+    private Integer quantity760ml;
 
     @Column(nullable = false)
-    private Integer quantity1Liter; // Quantity in milliliters for 1L
+    private Integer quantity1Liter;
 
     @Column(nullable = false)
-    private Integer quantity2Liter; // Quantity in milliliters for 2L
+    private Integer quantity2Liter;
 
     @Column(nullable = false)
     private LocalDateTime transactionDate;
@@ -59,14 +60,12 @@ public class StockTransaction {
     @Column(length = 255)
     private String billNo;
 
-    @ManyToOne
-    @JoinColumn(name = "UserId")
-    private User user;
-
-    @ManyToMany
-    @JoinColumn(name = "userProductId")
-    private UserProduct userProduct;
-
     @Column(length = 255)
     private Integer userId;
+
+    @ManyToOne
+    @JoinColumn(name = "userProductId")
+    @JsonIgnore
+    private UserProduct userProduct01;
+
 }

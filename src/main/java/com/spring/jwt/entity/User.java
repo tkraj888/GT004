@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -45,11 +46,9 @@ public class User {
     private Set<Role> roles;
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserProduct userProduct;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private StockTransaction stockTransaction;
+
+
 
     public String getName() {
         return null;
