@@ -83,6 +83,7 @@ public class AppConfig {
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers("/productMaster/**").permitAll()
+                .requestMatchers("/userProduct/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationManager(manager)

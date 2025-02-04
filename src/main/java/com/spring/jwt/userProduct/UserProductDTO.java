@@ -1,16 +1,18 @@
-package com.spring.jwt.masterProduct;
+package com.spring.jwt.userProduct;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.spring.jwt.dto.StockTransactionDTO;
+import lombok.*;
+
+import java.util.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductMasterDTO {
+public class UserProductDTO {
 
+    private Integer userProductId;
     private Integer productMasterId;
     private String name;
     private String brand;
@@ -20,6 +22,9 @@ public class ProductMasterDTO {
     private Integer stock760ml;
     private Integer stock1Liter;
     private Integer stock2Liter;
+    private Integer userId;
+    private Date date;
     private String type;
     private String mainType;
+    private Set<StockTransactionDTO> stockTransactions;
 }

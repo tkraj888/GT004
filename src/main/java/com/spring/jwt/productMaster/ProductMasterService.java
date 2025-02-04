@@ -1,4 +1,4 @@
-package com.spring.jwt.masterProduct;
+package com.spring.jwt.productMaster;
 
 import java.util.List;
 
