@@ -1,4 +1,4 @@
-package com.spring.jwt.dto;
+package com.spring.jwt.masterProduct;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.Builder;
 @Builder
 public class ProductMasterDTO {
 
-    private Integer masterId;
+    private Integer productMasterId;
     private String name;
     private String brand;
     private Integer stock90ml;

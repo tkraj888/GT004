@@ -1,18 +1,13 @@
-package com.spring.jwt.service;
+package com.spring.jwt.masterProduct;
 
-import com.spring.jwt.Interfaces.ProductMasterService;
-import com.spring.jwt.dto.ProductMasterDTO;
 import com.spring.jwt.entity.ProductMaster;
 import com.spring.jwt.exception.DuplicateProductException;
-import com.spring.jwt.exception.IdNotFoundException;
-import com.spring.jwt.repository.ProductMasterRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service

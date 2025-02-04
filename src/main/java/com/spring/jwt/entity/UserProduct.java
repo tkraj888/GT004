@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +24,7 @@ public class UserProduct {
     private Integer userProductId;
 
     @Column(nullable = false)
-    private Integer masterId;
+    private Integer productMasterId;
 
     @Column(nullable = false)
     private String name;
@@ -51,6 +52,15 @@ public class UserProduct {
 
     @Column(nullable = false)
     private Integer userId;
+
+    @Column(nullable = false)
+    private Date date;
+
+    @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
+    private String mainType;
 
     @OneToMany(mappedBy = "userProduct01")
     private Set<StockTransaction> stockTransactions = new LinkedHashSet<>();
