@@ -2,6 +2,7 @@ package com.spring.jwt.userProduct;
 
 import com.spring.jwt.dto.ResponseDto;
 import com.spring.jwt.dto.ResponsingDTO;
+import com.spring.jwt.entity.UserProduct;
 import com.spring.jwt.exception.IdNotFoundException;
 import com.spring.jwt.exception.UserAlreadyExistException;
 import com.spring.jwt.exception.UserAndProductMasterAlreadyPresentException;
@@ -37,6 +38,14 @@ public class UserProductController {
         }
 
     }
+
+//    @GetMapping("/getById")
+//    public ResponseEntity<ResponsingDTO> getUserProductById(Integer id){
+//        try{
+//            UserProduct userProduct=userProductService.getUserProductById(id);
+//        }
+    //i}
+
 
 
 
