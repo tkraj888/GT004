@@ -43,13 +43,13 @@ public class ProductMasterController {
             ResponsingDTO responsingDTO = new ResponsingDTO(id + " Found Successfully", productMasterDTO, false);
             return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
         } catch (IdNotFoundException e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO(id + " Not Found", null, true);
+            ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         } catch (MethodArgumentTypeMismatchException e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("Invalid UUID format: " + id, null, true);
+            ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsingDTO);
         } catch (Exception e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("Unexpected error: " + e.getMessage(), null, true);
+            ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage() + e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responsingDTO);
         }
     }
