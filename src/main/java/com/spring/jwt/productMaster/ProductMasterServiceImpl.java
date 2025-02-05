@@ -5,8 +5,10 @@ import com.spring.jwt.exception.DuplicateProductException;
 import com.spring.jwt.exception.IdNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,12 +41,19 @@ public class ProductMasterServiceImpl implements ProductMasterService {
     }
 
     @Override
-    public List<ProductMasterDTO> getAllProducts() {
-        List<ProductMaster> products = productMasterRepo.findAll();
-        return products.stream()
+    public List<ProductMasterDTO> getAllProducts(Integer pageNo, Integer pageSize) {
+        int defaultPageNo = (pageNo == null || pageNo < 1) ? 1 : pageNo;
+        int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
+
+        Pageable pageable = PageRequest.of(defaultPageNo - 1, defaultPageSize);
+        Page<ProductMaster> productPage = productMasterRepo.findAll(pageable);
+
+        return productPage.getContent().stream() // Extract the content as a list
                 .map(product -> mapper.map(product, ProductMasterDTO.class))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()); // Convert to List<ProductMasterDTO>
     }
+
+
 
     @Override
     public void deleteProductByID(Integer id) {

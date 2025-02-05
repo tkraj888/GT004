@@ -26,5 +26,5 @@ public class UserProductDTO {
     private Date date;
     private String type;
     private String mainType;
-    private Set<StockTransactionDTO> stockTransactions;
+
 }
