@@ -1,6 +1,6 @@
 package com.spring.jwt.userProduct;
 
-import com.spring.jwt.dto.StockTransactionDTO;
+import com.spring.jwt.stockTransaction.StockTransactionDTO;
 import lombok.*;
 
 import java.util.Date;
@@ -26,5 +26,5 @@ public class UserProductDTO {
     private Date date;
     private String type;
     private String mainType;
-    private Set<StockTransactionDTO> stockTransactions;
+
 }
