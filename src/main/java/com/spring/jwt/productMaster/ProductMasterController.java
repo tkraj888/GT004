@@ -1,5 +1,6 @@
 package com.spring.jwt.productMaster;
 
+import com.spring.jwt.dto.ResponseDto;
 import com.spring.jwt.dto.ResponsingDTO;
 import com.spring.jwt.exception.DuplicateProductException;
 import com.spring.jwt.exception.IdNotFoundException;
@@ -20,17 +21,17 @@ public class ProductMasterController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<ResponsingDTO> saveProductMaster(@RequestBody ProductMasterDTO masterDTO) {
+    public ResponseEntity<ResponseDto> saveProductMaster(@RequestBody ProductMasterDTO masterDTO) {
         try {
-            ProductMasterDTO productMaster = productMasterService.saveProductMaster(masterDTO);
-            ResponsingDTO responsingDTO = new ResponsingDTO("ProductMaster saved successfully", productMaster, false);
-            return ResponseEntity.status(HttpStatus.CREATED).body(responsingDTO);
+             productMasterService.saveProductMaster(masterDTO);
+            ResponseDto responseDto = new ResponseDto("Successful", "ProductMaster saved successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
         } catch (DuplicateProductException e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("Failed to save ProductMaster", e.getMessage(), true);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsingDTO);
+            ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
         } catch (Exception e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("Failed to save ProductMaster", e.getMessage(), true);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responsingDTO);
+            ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
 
@@ -61,7 +62,7 @@ public class ProductMasterController {
             ResponsingDTO responsingDTO = new ResponsingDTO("All Products Retrieved Successfully", productMasterList, false);
             return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
         } catch (Exception e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("Failed to retrieve products", e.getMessage(), true);
+            ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responsingDTO);
         }
     }
@@ -74,27 +75,27 @@ public class ProductMasterController {
             ResponsingDTO responsingDTO = new ResponsingDTO("ProductMaster updated successfully", updatedProduct, false);
             return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
         } catch (IdNotFoundException e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("ProductMaster not found", null, true);
+            ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         } catch (Exception e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("Failed to update ProductMaster", e.getMessage(), true);
+            ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(),null, true);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responsingDTO);
         }
     }
 
 
     @DeleteMapping("/deleteByID")
-    public ResponseEntity<ResponsingDTO> deleteProductMasterByID(@RequestParam Integer id) {
+    public ResponseEntity<ResponseDto> deleteProductMasterByID(@RequestParam Integer id) {
         try {
             productMasterService.deleteProductByID(id);
-            ResponsingDTO responsingDTO = new ResponsingDTO("ProductMaster deleted successfully", null, false);
-            return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
+            ResponseDto responseDto = new ResponseDto("Successful", "ProductMaster deleted successfully");
+            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
         } catch (IdNotFoundException e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("ProductMaster not found", null, true);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
+            ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
         } catch (Exception e) {
-            ResponsingDTO responsingDTO = new ResponsingDTO("Failed to delete ProductMaster", e.getMessage(), true);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responsingDTO);
+            ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
 }

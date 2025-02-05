@@ -39,4 +39,6 @@ public class UserProductServiceImpl implements UserProductService{
         UserProduct savedUserProduct=userProductRepo.save(userProduct);
         return  mapper.map(savedUserProduct,UserProductDTO.class);
     }
+
+
 }
