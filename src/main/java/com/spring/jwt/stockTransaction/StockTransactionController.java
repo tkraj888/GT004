@@ -64,28 +64,27 @@ public class StockTransactionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responsingDTO);
         }
     }
-    
+
 
 
     @PostMapping("/addStock")
     public ResponseEntity<ResponseDto> addStockTransaction(@RequestBody StockTransactionDTO transaction) {
         try {
             stockTransactionService.addStockTransaction(transaction);
-            ResponseDto responseDto = new ResponseDto("Successful", "ProductMaster saved successfully");
+            ResponseDto responseDto = new ResponseDto("Successful", "Stock Transaction saved successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
         } catch (IdNotFoundException e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
-        }
-        catch(StockTransactionAlreadyPresentException e){
-            ResponseDto responseDto=new ResponseDto("Unsuccessful",e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
-        }
-        catch (Exception e) {
+        } catch (StockTransactionAlreadyPresentException e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseDto); // Changed to 409 Conflict
+        } catch (Exception e) {
+            ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto); // Changed to 500
         }
     }
+
 
     @GetMapping("/GetAllStockTransaction")
     public ResponseEntity<ResponsingDTO> getAllStockTransaction(
