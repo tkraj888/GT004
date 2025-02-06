@@ -7,12 +7,16 @@ import com.spring.jwt.exception.IdNotFoundException;
 import com.spring.jwt.exception.UserAndProductMasterAlreadyPresentException;
 import com.spring.jwt.productMaster.ProductMasterRepo;
 import com.spring.jwt.repository.UserRepository;
-import com.spring.jwt.userProduct.UserProductDTO;
 import com.spring.jwt.userProduct.UserProductRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,4 +58,31 @@ public class StockTransactionServiceImpl implements StockTransactionService{
 
 
     }
+
+    @Override
+    public List<StockTransactionDTO> getAllStockTransaction(Integer page, Integer size) {
+
+        int pageNumber = (page == null || page < 1) ? 1 : page;
+        int pageSize = (size == null || size <= 0) ? 5 : size;
+
+        Pageable pageable =  PageRequest.of(pageNumber -1 , pageSize);
+        Page<StockTransaction> stockTransactionPage = stockTransactionRepo.findAll(pageable);
+
+        List<StockTransactionDTO> stockTransactionDTOList = new ArrayList<>();
+        for (StockTransaction stockTransaction : stockTransactionPage.getContent()) {
+            StockTransactionDTO dto = mapper.map(stockTransaction, StockTransactionDTO.class);
+            stockTransactionDTOList.add(dto);
+        }
+        return stockTransactionDTOList;
+    }
+
+    @Override
+    public StockTransactionDTO getByIdStockTransaction(Integer transactionId) {
+
+        StockTransaction stockTransaction= stockTransactionRepo.findById(transactionId).
+                orElseThrow(()-> new IdNotFoundException("StockTransaction Id Not found"));
+        return mapper.map(stockTransaction, StockTransactionDTO.class);
+    }
+
 }
+
