@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,25 +46,85 @@ public class UserProductServiceImpl implements UserProductService{
         return  mapper.map(savedUserProduct,UserProductDTO.class);
     }
 
+//    @Override
+//    public UserProductDTO getUserProductById(Integer id) {
+//        UserProduct userProduct=userProductRepo.findById(id).orElseThrow(()->new IdNotFoundException("Id:"+id+" not found"));
+//        return mapper.map(userProduct,UserProductDTO.class);
+//
+//    }
+
     @Override
     public UserProductDTO getUserProductById(Integer id) {
-        UserProduct userProduct=userProductRepo.findById(id).orElseThrow(()->new IdNotFoundException("Id:"+id+" not found"));
-        return mapper.map(userProduct,UserProductDTO.class);
+        UserProduct userProduct = userProductRepo.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Id:" + id + " not found"));
 
+        UserProductDTO dto = new UserProductDTO();
+        dto.setUserProductId(userProduct.getUserProductId());
+        dto.setProductMasterId(userProduct.getProductMasterId());
+        dto.setName(userProduct.getName());
+        dto.setBrand(userProduct.getBrand());
+        dto.setStock90ml(userProduct.getStock90ml());
+        dto.setStock180ml(userProduct.getStock180ml());
+        dto.setStock360ml(userProduct.getStock360ml());
+        dto.setStock760ml(userProduct.getStock760ml());
+        dto.setStock1Liter(userProduct.getStock1Liter());
+        dto.setStock2Liter(userProduct.getStock2Liter());
+        dto.setUserId(userProduct.getUserId());
+        dto.setDate(userProduct.getDate());
+        dto.setType(userProduct.getType());
+        dto.setMainType(userProduct.getMainType());
+
+        return dto;
     }
 
-    @Override
-    public List<UserProductDTO> getAllUserProduct(Integer pageNo, Integer pageSize) {
-        int defaultPageNo = (pageNo == null || pageNo < 1) ? 1 : pageNo;
-        int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
 
-        Pageable pageable = PageRequest.of(defaultPageNo - 1, defaultPageSize);
-        Page<UserProduct> userProducts = userProductRepo.findAll(pageable);
+//    @Override
+//    public List<UserProductDTO> getAllUserProduct(Integer pageNo, Integer pageSize) {
+//        int defaultPageNo = (pageNo == null || pageNo < 1) ? 1 : pageNo;
+//        int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
+//
+//        Pageable pageable = PageRequest.of(defaultPageNo - 1, defaultPageSize);
+//        Page<UserProduct> userProducts = userProductRepo.findAll(pageable);
+//
+//        return userProducts.getContent().stream() // Extract the content as a list
+//                .map(userProduct -> mapper.map(userProduct, UserProductDTO.class))
+//                .collect(Collectors.toList()); // Convert to List<UserProductDTO>
+//    }
 
-        return userProducts.getContent().stream() // Extract the content as a list
-                .map(userProduct -> mapper.map(userProduct, UserProductDTO.class))
-                .collect(Collectors.toList()); // Convert to List<UserProductDTO>
+        @Override
+        public List<UserProductDTO> getAllUserProduct(Integer pageNo, Integer pageSize) {
+
+            int defaultPageNo = (pageNo == null || pageNo < 1) ? 1 : pageNo;
+            int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
+
+            Pageable pageable = PageRequest.of(defaultPageNo - 1, defaultPageSize);
+            Page<UserProduct> userProducts = userProductRepo.findAll(pageable);
+
+            List<UserProductDTO> userProductDTOList = new ArrayList<>();
+            for (UserProduct userProduct : userProducts.getContent()) {
+
+                UserProductDTO dto = new UserProductDTO();
+                dto.setUserProductId(userProduct.getUserProductId());
+                dto.setProductMasterId(userProduct.getProductMasterId());
+                dto.setName(userProduct.getName());
+                dto.setBrand(userProduct.getBrand());
+                dto.setStock90ml(userProduct.getStock90ml());
+                dto.setStock180ml(userProduct.getStock180ml());
+                dto.setStock360ml(userProduct.getStock360ml());
+                dto.setStock760ml(userProduct.getStock760ml());
+                dto.setStock1Liter(userProduct.getStock1Liter());
+                dto.setStock2Liter(userProduct.getStock2Liter());
+                dto.setUserId(userProduct.getUserId());
+                dto.setDate(userProduct.getDate());
+                dto.setType(userProduct.getType());
+                dto.setMainType(userProduct.getMainType());
+
+                userProductDTOList.add(dto);
+            }
+
+        return userProductDTOList;
     }
+
 
 
 
