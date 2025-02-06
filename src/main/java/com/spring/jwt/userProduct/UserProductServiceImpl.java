@@ -46,7 +46,7 @@ public class UserProductServiceImpl implements UserProductService{
 
     @Override
     public UserProductDTO getUserProductById(Integer id) {
-        UserProduct userProduct=userProductRepo.findById(id).orElseThrow(()->new IdNotFoundException("Id:"+id+" not found"));
+        UserProduct userProduct=userProductRepo.findById(id).orElseThrow(()->new UserProductIdNotFound("Id:"+id+" not found"));
         return mapper.map(userProduct,UserProductDTO.class);
 
     }

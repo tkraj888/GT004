@@ -43,7 +43,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
     @Override
     public StockTransactionDTO getStockTransactionByUserID(Integer userId) {
         StockTransaction stockTransaction = stockTransactionRepo.findById(userId)
-                .orElseThrow(() -> new IdNotFoundException ("ProductMaster not found with id: " + userId));
+                .orElseThrow(() -> new StockTransactionIdNotFound ("ProductMaster not found with id: " + userId));
         return mapper.map(stockTransaction, StockTransactionDTO.class);
 
     }
@@ -110,7 +110,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
     public StockTransactionDTO getByIdStockTransaction(Integer transactionId) {
 
         StockTransaction stockTransaction= stockTransactionRepo.findById(transactionId).
-                orElseThrow(()-> new IdNotFoundException("StockTransaction Id Not found"));
+                orElseThrow(()-> new StockTransactionIdNotFound("StockTransaction Id Not found"));
         return mapper.map(stockTransaction, StockTransactionDTO.class);
     }
 

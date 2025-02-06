@@ -30,8 +30,8 @@ public class StockTransactionController {
             ResponsingDTO responsingDTO = new ResponsingDTO(" Stock Transaction By using User ID ",stockTransactionDTO,false);
             return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
         }
-        catch (IdNotFoundException e){
-            ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(),null,null);
+        catch (StockTransactionIdNotFound e){
+            ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(),null,true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         }
         catch (MethodArgumentTypeMismatchException e) {
@@ -51,7 +51,7 @@ public class StockTransactionController {
             List<StockTransactionDTO> stockTransactionDTOList = stockTransactionService.getStockTansactionByUserProductID(userProductId,pageNo,pageSize);
             ResponsingDTO responsingDTO = new ResponsingDTO("List of Stock Transaction By using User ProductID",stockTransactionDTOList,false);
             return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
-        }catch (IdNotFoundException e){
+        }catch (StockTransactionIdNotFound e){
             ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(),null,null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         }
