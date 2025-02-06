@@ -3,7 +3,7 @@ package com.spring.jwt.productMaster;
 import com.spring.jwt.dto.ResponseDto;
 import com.spring.jwt.dto.ResponsingDTO;
 import com.spring.jwt.exception.DuplicateProductException;
-import com.spring.jwt.exception.IdNotFoundException;
+import com.spring.jwt.exception.ProductMasterIdNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +42,7 @@ public class  ProductMasterController {
             ProductMasterDTO productMasterDTO = productMasterService.getProductByID(id);
             ResponsingDTO responsingDTO = new ResponsingDTO(id + " Found Successfully", productMasterDTO, false);
             return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
-        } catch (IdNotFoundException e) {
+        } catch (ProductMasterIdNotFound e) {
             ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         } catch (MethodArgumentTypeMismatchException e) {
@@ -78,7 +78,7 @@ public class  ProductMasterController {
             ProductMasterDTO updatedProduct = productMasterService.updateProductMasterByID(id, masterDTO);
             ResponsingDTO responsingDTO = new ResponsingDTO("ProductMaster updated successfully", updatedProduct, false);
             return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
-        } catch (IdNotFoundException e) {
+        } catch (ProductMasterIdNotFound e) {
             ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class  ProductMasterController {
             productMasterService.deleteProductByID(id);
             ResponseDto responseDto = new ResponseDto("Successful", "ProductMaster deleted successfully");
             return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-        } catch (IdNotFoundException e) {
+        } catch (ProductMasterIdNotFound e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
         } catch (Exception e) {

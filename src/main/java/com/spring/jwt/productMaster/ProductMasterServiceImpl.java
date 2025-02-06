@@ -2,7 +2,7 @@ package com.spring.jwt.productMaster;
 
 import com.spring.jwt.entity.ProductMaster;
 import com.spring.jwt.exception.DuplicateProductException;
-import com.spring.jwt.exception.IdNotFoundException;
+import com.spring.jwt.exception.ProductMasterIdNotFound;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -80,7 +80,7 @@ public class ProductMasterServiceImpl implements ProductMasterService {
 
     public ProductMasterDTO getProductByID(Integer id) {
         ProductMaster productMaster = productMasterRepo.findById(id)
-                .orElseThrow(() -> new IdNotFoundException("ProductMaster not found with id: " + id));
+                .orElseThrow(() -> new ProductMasterIdNotFound("ProductMaster not found with id: " + id));
 
         // Manually mapping Entity to DTO
         ProductMasterDTO productMasterDTO = new ProductMasterDTO();
@@ -146,7 +146,7 @@ public class ProductMasterServiceImpl implements ProductMasterService {
     @Override
     public void deleteProductByID(Integer id) {
         ProductMaster productMaster = productMasterRepo.findById(id)
-                .orElseThrow(() -> new IdNotFoundException("Product not found with id: " + id));
+                .orElseThrow(() -> new ProductMasterIdNotFound("Product not found with id: " + id));
         productMasterRepo.delete(productMaster);
     }
 //

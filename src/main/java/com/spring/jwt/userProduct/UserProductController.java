@@ -2,8 +2,7 @@ package com.spring.jwt.userProduct;
 
 import com.spring.jwt.dto.ResponseDto;
 import com.spring.jwt.dto.ResponsingDTO;
-import com.spring.jwt.exception.IdNotFoundException;
-import com.spring.jwt.exception.UserAndProductMasterAlreadyPresentException;
+import com.spring.jwt.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +25,12 @@ public class UserProductController {
             userProductService.saveUserProduct(userProductDTO);
             ResponseDto responseDto = new ResponseDto("Successful", "UserProduct saved successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-        } catch (IdNotFoundException e) {
+        }
+        catch (ProductMasterIdNotFound e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
-        } catch (UserAndProductMasterAlreadyPresentException e) {
+        }
+        catch (AlreadyIsPresent e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
 
@@ -46,7 +47,7 @@ public class UserProductController {
             UserProductDTO userProductDTO = userProductService.getUserProductById(id);
             ResponsingDTO responsingDTO = new ResponsingDTO(id + " Found Successfully", userProductDTO, false);
             return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
-        } catch (IdNotFoundException e) {
+        } catch (UserProductIdNotFound e) {
             ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         } catch (MethodArgumentTypeMismatchException e) {
