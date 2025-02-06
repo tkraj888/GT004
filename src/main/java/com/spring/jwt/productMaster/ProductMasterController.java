@@ -4,6 +4,7 @@ import com.spring.jwt.dto.ResponseDto;
 import com.spring.jwt.dto.ResponsingDTO;
 import com.spring.jwt.exception.DuplicateProductException;
 import com.spring.jwt.exception.IdNotFoundException;
+import com.spring.jwt.exception.ProductMasterIdNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class  ProductMasterController {
             ProductMasterDTO productMasterDTO = productMasterService.getProductByID(id);
             ResponsingDTO responsingDTO = new ResponsingDTO(id + " Found Successfully", productMasterDTO, false);
             return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
-        } catch (IdNotFoundException e) {
+        } catch (ProductMasterIdNotFound e) {
             ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         } catch (MethodArgumentTypeMismatchException e) {
