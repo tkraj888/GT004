@@ -1,8 +1,7 @@
 package com.spring.jwt.userProduct;
 
 import com.spring.jwt.entity.UserProduct;
-import com.spring.jwt.exception.IdNotFoundException;
-import com.spring.jwt.exception.UserAndProductMasterAlreadyPresentException;
+import com.spring.jwt.exception.*;
 import com.spring.jwt.productMaster.ProductMasterRepo;
 import com.spring.jwt.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -34,12 +33,12 @@ public class UserProductServiceImpl implements UserProductService{
     public UserProductDTO saveUserProduct(UserProductDTO userProductDTO) {
         UserProduct userProduct=mapper.map(userProductDTO,UserProduct.class);
         userRepository.findById(userProduct.getUserId())
-                .orElseThrow(()-> new IdNotFoundException("User not found with id:"+ userProduct.getUserId()));
+                .orElseThrow(()-> new UserIdNotFound("User not found with id:"+ userProduct.getUserId()));
         productMasterRepo.findById(userProduct.getProductMasterId())
-                .orElseThrow(()->new IdNotFoundException("ProductMaster not found with id:"+userProduct.getProductMasterId()));
+                .orElseThrow(()->new ProductMasterIdNotFound("ProductMaster not found with id:"+userProduct.getProductMasterId()));
         UserProduct userProduct1=userProductRepo.findByUserIdAndProductMasterId(userProduct.getUserId(),userProduct.getProductMasterId());
         if(userProduct1!=null){
-            throw new UserAndProductMasterAlreadyPresentException("UserID and MasterID already exist");
+            throw new AlreadyIsPresent("UserID and MasterID already exist");
         }
         UserProduct savedUserProduct=userProductRepo.save(userProduct);
         return  mapper.map(savedUserProduct,UserProductDTO.class);
