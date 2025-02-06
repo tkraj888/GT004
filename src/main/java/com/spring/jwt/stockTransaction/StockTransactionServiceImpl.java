@@ -3,12 +3,15 @@ package com.spring.jwt.stockTransaction;
 import com.spring.jwt.entity.StockTransaction;
 import com.spring.jwt.exception.IdNotFoundException;
 import com.spring.jwt.productMaster.ProductMasterDTO;
-import com.spring.jwt.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StockTransactionServiceImpl implements StockTransactionService{
@@ -31,7 +34,19 @@ public class StockTransactionServiceImpl implements StockTransactionService{
     }
 
     @Override
-    public List<StockTransactionDTO> getStockTansactionByUserProductID(Integer userProductId) {
-        return List.of();
+    public List<StockTransactionDTO> getStockTansactionByUserProductID(Integer userProductId, Integer pageNo, Integer pageSize) {
+
+        int defaultPageNo = (pageNo == null || pageNo < 1) ? 1 : pageNo;
+        int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
+
+        Pageable pageable = PageRequest.of(defaultPageNo - 1, defaultPageSize);
+
+        Page<StockTransaction> stockTransactionPage = stockTransactionRepo.findByUserProduct01_UserProductId(userProductId, pageable);
+
+        return stockTransactionPage.getContent().stream()
+                .map(transaction -> mapper.map(transaction, StockTransactionDTO.class))
+                .collect(Collectors.toList());
     }
+
+
 }

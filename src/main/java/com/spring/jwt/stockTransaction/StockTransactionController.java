@@ -39,9 +39,11 @@ public class StockTransactionController {
     }
 
     @GetMapping("/getStockTransactionByUserProductID")
-    public ResponseEntity<ResponsingDTO> getStockTansactionByUserProductID(@RequestParam Integer userProductId){
+    public ResponseEntity<ResponsingDTO> getStockTansactionByUserProductID(@RequestParam Integer userProductId,
+                                                                           @RequestParam(value = "pageNo", required = false) Integer pageNo,
+                                                                           @RequestParam(value = "pageSize", required = false) Integer pageSize ){
         try{
-            List<StockTransactionDTO> stockTransactionDTOList = stockTransactionService.getStockTansactionByUserProductID(userProductId);
+            List<StockTransactionDTO> stockTransactionDTOList = stockTransactionService.getStockTansactionByUserProductID(userProductId,pageNo,pageSize);
             ResponsingDTO responsingDTO = new ResponsingDTO("List of Stock Transaction By using User ProductID",stockTransactionDTOList,false);
             return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
         }catch (IdNotFoundException e){
