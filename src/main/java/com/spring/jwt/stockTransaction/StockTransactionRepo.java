@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StockTransactionRepo extends JpaRepository<StockTransaction,Integer> {
+
+
 }
