@@ -2,12 +2,9 @@ package com.spring.jwt.userProduct;
 
 import com.spring.jwt.dto.ResponseDto;
 import com.spring.jwt.dto.ResponsingDTO;
-import com.spring.jwt.entity.UserProduct;
 import com.spring.jwt.exception.IdNotFoundException;
-import com.spring.jwt.exception.UserAlreadyExistException;
 import com.spring.jwt.exception.UserAndProductMasterAlreadyPresentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

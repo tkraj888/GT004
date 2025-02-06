@@ -1,9 +1,10 @@
 package com.spring.jwt.stockTransaction;
 
-import com.spring.jwt.dto.StockTransactionDTO;
+
+import com.spring.jwt.entity.ProductMaster;
 import com.spring.jwt.entity.StockTransaction;
-import com.spring.jwt.entity.UserProduct;
 import com.spring.jwt.exception.IdNotFoundException;
+import com.spring.jwt.entity.UserProduct;
 import com.spring.jwt.exception.UserAndProductMasterAlreadyPresentException;
 import com.spring.jwt.productMaster.ProductMasterRepo;
 import com.spring.jwt.repository.UserRepository;
@@ -15,25 +16,56 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 public class StockTransactionServiceImpl implements StockTransactionService{
 
     @Autowired
-    private ModelMapper mapper;
+    private StockTransactionRepo stockTransactionRepo;
+
     @Autowired
-    private UserRepository userRepository;
+    private ModelMapper mapper;
+
+    @Autowired
+   private UserRepository userRepository;
+
     @Autowired
     private ProductMasterRepo productMasterRepo;
 
     @Autowired
-    private UserProductRepo userProductRepo;
+    private UserProductRepo  userProductRepo;
 
-    @Autowired
-    private StockTransactionRepo stockTransactionRepo;
+    private StockTransaction stockTransaction;
+
+
+    @Override
+    public StockTransactionDTO getStockTransactionByUserID(Integer userId) {
+        StockTransaction stockTransaction = stockTransactionRepo.findById(userId)
+                .orElseThrow(() -> new IdNotFoundException ("ProductMaster not found with id: " + userId));
+        return mapper.map(stockTransaction, StockTransactionDTO.class);
+
+    }
+
+    @Override
+    public List<StockTransactionDTO> getStockTansactionByUserProductID(Integer userProductId, Integer pageNo, Integer pageSize) {
+
+        int defaultPageNo = (pageNo == null || pageNo < 1) ? 1 : pageNo;
+        int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
+
+        Pageable pageable = PageRequest.of(defaultPageNo - 1, defaultPageSize);
+
+        Page<StockTransaction> stockTransactionPage = stockTransactionRepo.findByUserProduct01_UserProductId(userProductId, pageable);
+
+        return stockTransactionPage.getContent().stream()
+                .map(transaction -> mapper.map(transaction, StockTransactionDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
 
 
     @Override
