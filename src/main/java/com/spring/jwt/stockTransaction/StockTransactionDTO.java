@@ -1,4 +1,4 @@
-package com.spring.jwt.dto;
+package com.spring.jwt.stockTransaction;
 
 import lombok.*;
 
