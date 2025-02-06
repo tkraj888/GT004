@@ -43,7 +43,7 @@ public class StockTransaction {
 
     @Column(nullable = false)
     private Integer quantity360ml;
-uhby8h8ubu8huhuh
+
     @Column(nullable = false)
     private Integer quantity760ml;
 
