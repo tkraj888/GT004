@@ -2,13 +2,18 @@ package com.spring.jwt.userProduct;
 
 import com.spring.jwt.entity.UserProduct;
 import com.spring.jwt.exception.IdNotFoundException;
-import com.spring.jwt.exception.UserAlreadyExistException;
 import com.spring.jwt.exception.UserAndProductMasterAlreadyPresentException;
 import com.spring.jwt.productMaster.ProductMasterRepo;
 import com.spring.jwt.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserProductServiceImpl implements UserProductService{
@@ -39,6 +44,29 @@ public class UserProductServiceImpl implements UserProductService{
         UserProduct savedUserProduct=userProductRepo.save(userProduct);
         return  mapper.map(savedUserProduct,UserProductDTO.class);
     }
+
+    @Override
+    public UserProductDTO getUserProductById(Integer id) {
+        UserProduct userProduct=userProductRepo.findById(id).orElseThrow(()->new IdNotFoundException("Id:"+id+" not found"));
+        return mapper.map(userProduct,UserProductDTO.class);
+
+    }
+
+    @Override
+    public List<UserProductDTO> getAllUserProduct(Integer pageNo, Integer pageSize) {
+        int defaultPageNo = (pageNo == null || pageNo < 1) ? 1 : pageNo;
+        int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
+
+        Pageable pageable = PageRequest.of(defaultPageNo - 1, defaultPageSize);
+        Page<UserProduct> userProducts = userProductRepo.findAll(pageable);
+
+        return userProducts.getContent().stream() // Extract the content as a list
+                .map(userProduct -> mapper.map(userProduct, UserProductDTO.class))
+                .collect(Collectors.toList()); // Convert to List<UserProductDTO>
+    }
+
+
+
 
 
 }
