@@ -76,21 +76,20 @@ public class StockTransactionController {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
         }
-
         catch (ProductMasterIdNotFound e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);}
-
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
+        }
         catch (UserProductIdNotFound e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);}
-
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
+        }
         catch (AlreadyIsPresent e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseDto); // Changed to 409 Conflict
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseDto);
         } catch (Exception e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto); // Changed to 500
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
 

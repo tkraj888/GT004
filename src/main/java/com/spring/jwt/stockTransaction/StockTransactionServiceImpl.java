@@ -4,10 +4,7 @@ package com.spring.jwt.stockTransaction;
 import com.spring.jwt.entity.ProductMaster;
 import com.spring.jwt.entity.StockTransaction;
 import com.spring.jwt.entity.UserProduct;
-import com.spring.jwt.exception.AlreadyIsPresent;
-import com.spring.jwt.exception.ProductMasterIdNotFound;
-import com.spring.jwt.exception.StockTransactionIdNotFound;
-import com.spring.jwt.exception.UserIdNotFound;
+import com.spring.jwt.exception.*;
 import com.spring.jwt.productMaster.ProductMasterRepo;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.userProduct.UserProductRepo;
@@ -133,6 +130,25 @@ public class StockTransactionServiceImpl implements StockTransactionService{
 
 
 
+//    @Override
+//    public StockTransactionDTO addStockTransaction(StockTransactionDTO transaction) {
+//
+//        StockTransaction transaction1=mapper.map(transaction, StockTransaction.class);
+//        userRepository.findById(transaction1.getUserId())
+//                .orElseThrow(()-> new UserIdNotFound("User not found with id:"+ transaction1.getUserId()));
+//        productMasterRepo.findById(transaction1.getProductMasterId())
+//                .orElseThrow(()->new ProductMasterIdNotFound("ProductMaster not found with id:"+transaction1.getProductMasterId()));
+//        Optional<UserProduct> userProduct=userProductRepo.findById(transaction1.getUserProduct01().getUserProductId());
+//
+//        StockTransaction transaction2=stockTransactionRepo.findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(transaction1.getUserId(),transaction1.getProductMasterId(),transaction1.getUserProduct01().getUserProductId());
+//
+//        if(transaction2!=null){
+//            throw new AlreadyIsPresent("UserID and MasterID already exist");
+//        }
+//        StockTransaction savedUserProduct=stockTransactionRepo.save(transaction1);
+//        return  mapper.map(savedUserProduct, StockTransactionDTO.class);
+//    }
+
     @Override
     public StockTransactionDTO addStockTransaction(StockTransactionDTO transaction) {
 
@@ -141,7 +157,12 @@ public class StockTransactionServiceImpl implements StockTransactionService{
                 .orElseThrow(()-> new UserIdNotFound("User not found with id:"+ transaction1.getUserId()));
         productMasterRepo.findById(transaction1.getProductMasterId())
                 .orElseThrow(()->new ProductMasterIdNotFound("ProductMaster not found with id:"+transaction1.getProductMasterId()));
-        Optional<UserProduct> userProduct=userProductRepo.findById(transaction1.getUserProduct01().getUserProductId());
+
+        UserProduct userProduct = userProductRepo.findById(transaction.getUserProductId())
+                .orElseThrow(() -> new UserProductIdNotFound("UserProduct not found with id: " + transaction.getUserProductId()));
+
+        transaction1.setUserProduct01(userProduct);
+
 
         StockTransaction transaction2=stockTransactionRepo.findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(transaction1.getUserId(),transaction1.getProductMasterId(),transaction1.getUserProduct01().getUserProductId());
 
@@ -152,6 +173,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
         return  mapper.map(savedUserProduct, StockTransactionDTO.class);
 
     }
+
 
     @Override
     public List<StockTransactionDTO> getAllStockTransaction(Integer page, Integer size) {
