@@ -77,7 +77,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
 
 // Fetch UserProduct entity and set it manually
         UserProduct userProduct = userProductRepo.findById(transaction.getUserProductId())
-                .orElseThrow(() -> new IdNotFoundException("UserProduct not found with id: " + transaction.getUserProductId()));
+                .orElseThrow(() -> new UserProductIdNotFound("UserProduct not found with id: " + transaction.getUserProductId()));
 
         transaction1.setUserProduct01(userProduct);
 
