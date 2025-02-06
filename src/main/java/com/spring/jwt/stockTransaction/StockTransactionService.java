@@ -8,6 +8,8 @@ import java.util.List;
 public interface StockTransactionService  {
 
 
+    StockTransactionDTO addStockTransaction(StockTransactionDTO transaction);
+
     List<StockTransactionDTO> getAllStockTransaction(Integer page, Integer size);
 
     StockTransactionDTO getByIdStockTransaction(Integer transactionId);

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StockTransactionRepo extends JpaRepository<StockTransaction,Integer> {
-
-
+    StockTransaction findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(
+            Integer userId,
+            Integer productMasterId,
+            Integer userProductId
+    );
 }
