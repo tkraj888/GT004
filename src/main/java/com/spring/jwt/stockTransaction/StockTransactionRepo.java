@@ -8,5 +8,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StockTransactionRepo extends JpaRepository<StockTransaction,Integer> {
+
     Page<StockTransaction> findByUserProduct01_UserProductId(Integer userProductId, Pageable pageable);
+    StockTransaction findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(
+            Integer userId,
+            Integer productMasterId,
+            Integer userProductId
+    );
 }
