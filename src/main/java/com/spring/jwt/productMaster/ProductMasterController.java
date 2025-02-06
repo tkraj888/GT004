@@ -5,6 +5,7 @@ import com.spring.jwt.dto.ResponsingDTO;
 import com.spring.jwt.exception.DuplicateProductException;
 import com.spring.jwt.exception.IdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class ProductMasterController {
         try {
             ProductMasterDTO productMasterDTO = productMasterService.getProductByID(id);
             ResponsingDTO responsingDTO = new ResponsingDTO(id + " Found Successfully", productMasterDTO, false);
-            return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
+            return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
         } catch (IdNotFoundException e) {
             ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
@@ -56,9 +57,11 @@ public class ProductMasterController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<ResponsingDTO> getAllProductMasters() {
+    public ResponseEntity<ResponsingDTO> getAllProductMasters(
+            @RequestParam(value = "pageNo", required = false) Integer pageNo,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         try {
-            List<ProductMasterDTO> productMasterList = productMasterService.getAllProducts();
+            List<ProductMasterDTO> productMasterList = productMasterService.getAllProducts(pageNo, pageSize);
             ResponsingDTO responsingDTO = new ResponsingDTO("All Products Retrieved Successfully", productMasterList, false);
             return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
         } catch (Exception e) {
@@ -66,6 +69,8 @@ public class ProductMasterController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responsingDTO);
         }
     }
+
+
 
 
     @PatchMapping("/updateByID")
