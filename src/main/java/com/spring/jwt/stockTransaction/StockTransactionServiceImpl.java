@@ -3,11 +3,8 @@ package com.spring.jwt.stockTransaction;
 
 import com.spring.jwt.entity.ProductMaster;
 import com.spring.jwt.entity.StockTransaction;
-import com.spring.jwt.exception.IdNotFoundException;
+import com.spring.jwt.exception.*;
 import com.spring.jwt.entity.UserProduct;
-import com.spring.jwt.exception.ProductMasterIdNotFound;
-import com.spring.jwt.exception.UserAndProductMasterAlreadyPresentException;
-import com.spring.jwt.exception.UserIdNotFound;
 import com.spring.jwt.productMaster.ProductMasterRepo;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.userProduct.UserProductRepo;
@@ -83,7 +80,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
         StockTransaction transaction2=stockTransactionRepo.findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(transaction1.getUserId(),transaction1.getProductMasterId(),transaction1.getUserProduct01().getUserProductId());
 
         if(transaction2!=null){
-            throw new UserAndProductMasterAlreadyPresentException("UserID and MasterID already exist");
+            throw new AlreadyIsPresent("UserID and MasterID already exist");
         }
         StockTransaction savedUserProduct=stockTransactionRepo.save(transaction1);
         return  mapper.map(savedUserProduct, StockTransactionDTO.class);
