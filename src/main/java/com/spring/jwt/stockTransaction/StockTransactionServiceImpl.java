@@ -1,7 +1,6 @@
 package com.spring.jwt.stockTransaction;
 
 
-import com.spring.jwt.entity.ProductMaster;
 import com.spring.jwt.entity.StockTransaction;
 import com.spring.jwt.exception.IdNotFoundException;
 import com.spring.jwt.entity.UserProduct;
