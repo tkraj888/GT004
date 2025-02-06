@@ -75,7 +75,13 @@ public class StockTransactionServiceImpl implements StockTransactionService{
                 .orElseThrow(()-> new UserIdNotFound("User not found with id:"+ transaction1.getUserId()));
         productMasterRepo.findById(transaction1.getProductMasterId())
                 .orElseThrow(()->new ProductMasterIdNotFound("ProductMaster not found with id:"+transaction1.getProductMasterId()));
-        Optional<UserProduct> userProduct=userProductRepo.findById(transaction1.getUserProduct01().getUserProductId());
+
+// Fetch UserProduct entity and set it manually
+        UserProduct userProduct = userProductRepo.findById(transaction.getUserProductId())
+                .orElseThrow(() -> new IdNotFoundException("UserProduct not found with id: " + transaction.getUserProductId()));
+
+        transaction1.setUserProduct01(userProduct);
+
 
         StockTransaction transaction2=stockTransactionRepo.findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(transaction1.getUserId(),transaction1.getProductMasterId(),transaction1.getUserProduct01().getUserProductId());
 
