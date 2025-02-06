@@ -29,7 +29,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
     private UserProductRepo userProductRepo;
 
     @Autowired
-    private StockTransactionRepo repo;
+    private StockTransactionRepo stockTransactionRepo;
 
 
     @Override
@@ -42,12 +42,12 @@ public class StockTransactionServiceImpl implements StockTransactionService{
                 .orElseThrow(()->new IdNotFoundException("ProductMaster not found with id:"+transaction1.getProductMasterId()));
         Optional<UserProduct> userProduct=userProductRepo.findById(transaction1.getUserProduct01().getUserProductId());
 
-        StockTransaction transaction2=repo.findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(transaction1.getUserId(),transaction1.getProductMasterId(),transaction1.getUserProduct01().getUserProductId());
+        StockTransaction transaction2=stockTransactionRepo.findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(transaction1.getUserId(),transaction1.getProductMasterId(),transaction1.getUserProduct01().getUserProductId());
 
         if(transaction2!=null){
             throw new UserAndProductMasterAlreadyPresentException("UserID and MasterID already exist");
         }
-        StockTransaction savedUserProduct=repo.save(transaction1);
+        StockTransaction savedUserProduct=stockTransactionRepo.save(transaction1);
         return  mapper.map(savedUserProduct, StockTransactionDTO.class);
 
 
