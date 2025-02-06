@@ -25,9 +25,6 @@ public class UserProductController {
             userProductService.saveUserProduct(userProductDTO);
             ResponseDto responseDto = new ResponseDto("Successful", "UserProduct saved successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-        } catch (UserIdNotFound e) {
-            ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
         }
         catch (ProductMasterIdNotFound e) {
             ResponseDto responseDto = new ResponseDto("Unsuccessful", e.getMessage());
@@ -50,7 +47,7 @@ public class UserProductController {
             UserProductDTO userProductDTO = userProductService.getUserProductById(id);
             ResponsingDTO responsingDTO = new ResponsingDTO(id + " Found Successfully", userProductDTO, false);
             return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
-        } catch (IdNotFoundException e) {
+        } catch (UserProductIdNotFound e) {
             ResponsingDTO responsingDTO = new ResponsingDTO(e.getMessage(), null, true);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
         } catch (MethodArgumentTypeMismatchException e) {
