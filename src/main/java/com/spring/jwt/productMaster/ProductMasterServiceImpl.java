@@ -119,6 +119,7 @@ public class ProductMasterServiceImpl implements ProductMasterService {
         int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
 
         Pageable pageable = PageRequest.of(defaultPageNo - 1, defaultPageSize);
+        pageable.getSort().descending();
         Page<ProductMaster> productPage = productMasterRepo.findAll(pageable);
 
         return productPage.getContent().stream() // Extract the content as a list
