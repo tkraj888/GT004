@@ -1,5 +1,9 @@
 package com.spring.jwt.stockTransaction;
 
+import org.springframework.data.domain.Page;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface StockTransactionService  {
@@ -12,4 +16,13 @@ public interface StockTransactionService  {
     List<StockTransactionDTO> getAllStockTransaction(Integer page, Integer size);
 
     StockTransactionDTO getByIdStockTransaction(Integer transactionId);
+
+
+    Page<StockTransactionDTO> getStockTransactionByDateRange(Integer id, LocalDateTime startDate, LocalDateTime endDate, Integer pageNo, Integer pageSize);
+
+
+    List<StockTransactionDTO> getStockTransactionByIdAndDate(Integer id, LocalDateTime date, Integer pageNo, Integer pageSize);
+
+
+    List<StockTransactionDTO> getStockTransactionByBillNo(String billNo, Integer pageNo, Integer pageSize);
 }

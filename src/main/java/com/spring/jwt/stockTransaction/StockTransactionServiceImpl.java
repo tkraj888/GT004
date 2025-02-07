@@ -1,7 +1,6 @@
 package com.spring.jwt.stockTransaction;
 
 
-import com.spring.jwt.entity.ProductMaster;
 import com.spring.jwt.entity.StockTransaction;
 import com.spring.jwt.entity.UserProduct;
 import com.spring.jwt.exception.*;
@@ -11,14 +10,16 @@ import com.spring.jwt.userProduct.UserProductRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class StockTransactionServiceImpl implements StockTransactionService{
@@ -72,6 +73,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
         dto.setUserId(stockTransaction.getUserId());
         dto.setType(stockTransaction.getType());
         dto.setMainType(stockTransaction.getMainType());
+        dto.setUserProductId(stockTransaction.getUserProduct01().getUserProductId());
 
         return dto;
     }
@@ -122,6 +124,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
                     dto.setUserId(transaction.getUserId());
                     dto.setType(transaction.getType());
                     dto.setMainType(transaction.getMainType());
+                    dto.setUserProductId(transaction.getUserProduct01().getUserProductId());
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -205,7 +208,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
             dto.setUserId(stockTransaction.getUserId());
             dto.setType(stockTransaction.getType());
             dto.setMainType(stockTransaction.getMainType());
-
+            dto.setUserProductId(stockTransaction.getUserProduct01().getUserProductId());
             stockTransactionDTOList.add(dto);
         }
 
@@ -246,9 +249,118 @@ public class StockTransactionServiceImpl implements StockTransactionService{
         dto.setUserId(stockTransaction.getUserId());
         dto.setType(stockTransaction.getType());
         dto.setMainType(stockTransaction.getMainType());
-
+        dto.setUserProductId(stockTransaction.getUserProduct01().getUserProductId());
         return dto;
     }
+
+    @Override
+    public Page<StockTransactionDTO> getStockTransactionByDateRange(Integer id, LocalDateTime startDate, LocalDateTime endDate, Integer pageNo, Integer pageSize) {
+        int defaultPageNo = (pageNo == null || pageNo < 1) ? 0 : pageNo - 1;
+        int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
+
+        Pageable pageable = PageRequest.of(defaultPageNo, defaultPageSize);
+        Page<StockTransaction> stockTransactions = stockTransactionRepo.findByUserIdAndDateRange(id, startDate, endDate, pageable);
+
+        List<StockTransactionDTO> dtoList = new ArrayList<>();
+        for (StockTransaction stockTransaction : stockTransactions.getContent()) {
+            StockTransactionDTO dto = new StockTransactionDTO();
+            dto.setTransactionId(stockTransaction.getTransactionId());
+            dto.setProductMasterId(stockTransaction.getProductMasterId());
+            dto.setName(stockTransaction.getName());
+            dto.setBrand(stockTransaction.getBrand());
+            dto.setTransactionType(String.valueOf(stockTransaction.getTransactionType()));
+            dto.setQuantity90ml(stockTransaction.getQuantity90ml());
+            dto.setQuantity180ml(stockTransaction.getQuantity180ml());
+            dto.setQuantity360ml(stockTransaction.getQuantity360ml());
+            dto.setQuantity760ml(stockTransaction.getQuantity760ml());
+            dto.setQuantity1Liter(stockTransaction.getQuantity1Liter());
+            dto.setQuantity2Liter(stockTransaction.getQuantity2Liter());
+            dto.setTransactionDate(stockTransaction.getTransactionDate());
+            dto.setRemarks(stockTransaction.getRemarks());
+            dto.setBillNo(stockTransaction.getBillNo());
+            dto.setUserId(stockTransaction.getUserId());
+            dto.setType(stockTransaction.getType());
+            dto.setMainType(stockTransaction.getMainType());
+            dto.setUserProductId(stockTransaction.getUserProduct01().getUserProductId());
+            dtoList.add(dto);
+        }
+
+        return new PageImpl<>(dtoList, pageable, stockTransactions.getTotalElements());
+    }
+
+    @Override
+    public List<StockTransactionDTO> getStockTransactionByIdAndDate(Integer id, LocalDateTime date, Integer pageNo, Integer pageSize) {
+        int defaultPageNo = (pageNo == null || pageNo < 1) ? 0 : pageNo - 1;
+        int defaultPageSize = (pageSize == null || pageSize < 1) ? 5 : pageSize;
+
+        Pageable pageable = PageRequest.of(defaultPageNo, defaultPageSize);
+
+
+        Page<StockTransaction> stockTransactions = stockTransactionRepo.getStockTransactionByIdAndDate(id, date, pageable);
+
+        List<StockTransactionDTO> stockTransactionDTOs = new ArrayList<>();
+        for (StockTransaction stockTransaction : stockTransactions.getContent()) {
+            StockTransactionDTO dto = new StockTransactionDTO();
+            dto.setTransactionId(stockTransaction.getTransactionId());
+            dto.setProductMasterId(stockTransaction.getProductMasterId());
+            dto.setName(stockTransaction.getName());
+            dto.setBrand(stockTransaction.getBrand());
+            dto.setTransactionType(String.valueOf(stockTransaction.getTransactionType()));
+            dto.setQuantity90ml(stockTransaction.getQuantity90ml());
+            dto.setQuantity180ml(stockTransaction.getQuantity180ml());
+            dto.setQuantity360ml(stockTransaction.getQuantity360ml());
+            dto.setQuantity760ml(stockTransaction.getQuantity760ml());
+            dto.setQuantity1Liter(stockTransaction.getQuantity1Liter());
+            dto.setQuantity2Liter(stockTransaction.getQuantity2Liter());
+            dto.setTransactionDate(stockTransaction.getTransactionDate());
+            dto.setRemarks(stockTransaction.getRemarks());
+            dto.setBillNo(stockTransaction.getBillNo());
+            dto.setUserId(stockTransaction.getUserId());
+            dto.setType(stockTransaction.getType());
+            dto.setMainType(stockTransaction.getMainType());
+            dto.setUserProductId(stockTransaction.getUserProduct01().getUserProductId());
+            stockTransactionDTOs.add(dto);
+        }
+
+        return stockTransactionDTOs;
+    }
+
+    @Override
+    public List<StockTransactionDTO> getStockTransactionByBillNo(String billNo, Integer pageNo, Integer pageSize) {
+
+        int defaultPageNo =(pageNo==null || pageSize < 1)? 0 : pageNo-1;
+        int defaultPageSize=(pageSize == null || pageSize < 1) ? 5 : pageSize;
+
+        Pageable pageable= PageRequest.of(defaultPageNo,defaultPageSize);
+
+        Page<StockTransaction> stockTransactions= stockTransactionRepo.getStockTransactionByBillNo(billNo,pageable);
+
+        List<StockTransactionDTO> stockTransactionDTOs = new ArrayList<>();
+        for (StockTransaction stockTransaction : stockTransactions.getContent()) {
+            StockTransactionDTO dto = new StockTransactionDTO();
+            dto.setTransactionId(stockTransaction.getTransactionId());
+            dto.setProductMasterId(stockTransaction.getProductMasterId());
+            dto.setName(stockTransaction.getName());
+            dto.setBrand(stockTransaction.getBrand());
+            dto.setTransactionType(String.valueOf(stockTransaction.getTransactionType()));
+            dto.setQuantity90ml(stockTransaction.getQuantity90ml());
+            dto.setQuantity180ml(stockTransaction.getQuantity180ml());
+            dto.setQuantity360ml(stockTransaction.getQuantity360ml());
+            dto.setQuantity760ml(stockTransaction.getQuantity760ml());
+            dto.setQuantity1Liter(stockTransaction.getQuantity1Liter());
+            dto.setQuantity2Liter(stockTransaction.getQuantity2Liter());
+            dto.setTransactionDate(stockTransaction.getTransactionDate());
+            dto.setRemarks(stockTransaction.getRemarks());
+            dto.setBillNo(stockTransaction.getBillNo());
+            dto.setUserId(stockTransaction.getUserId());
+            dto.setType(stockTransaction.getType());
+            dto.setMainType(stockTransaction.getMainType());
+            dto.setUserProductId(stockTransaction.getUserProduct01().getUserProductId());
+            stockTransactionDTOs.add(dto);
+        }
+        return stockTransactionDTOs;
+    }
+
 
 }
 
