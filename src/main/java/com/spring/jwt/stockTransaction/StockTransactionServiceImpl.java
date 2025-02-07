@@ -85,7 +85,7 @@ public class StockTransactionServiceImpl implements StockTransactionService{
         StockTransaction transaction2=stockTransactionRepo.findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(transaction1.getUserId(),transaction1.getProductMasterId(),transaction1.getUserProduct01().getUserProductId());
 
         if(transaction2!=null){
-            throw new AlreadyIsPresent("UserID and MasterID already exist");
+            throw new AlreadyIsPresent("UserID,MasterID,UserProductID already exist");
         }
         StockTransaction savedUserProduct=stockTransactionRepo.save(transaction1);
         return  mapper.map(savedUserProduct, StockTransactionDTO.class);
