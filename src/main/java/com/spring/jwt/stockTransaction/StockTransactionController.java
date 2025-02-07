@@ -4,6 +4,7 @@ package com.spring.jwt.stockTransaction;
 import com.spring.jwt.dto.ResponsingDTO;
 import com.spring.jwt.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,9 @@ import com.spring.jwt.dto.ResponseDto;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -93,6 +97,34 @@ public class StockTransactionController {
         }
     }
 
+    @GetMapping("/ByUserId&UserProductId")
+    public ResponseEntity<ResponsingDTO> getByUserIdAndProductId(@RequestParam Integer userId,
+                                                                 @RequestParam Integer userProductId,
+                                                                 @RequestParam(value = "pageNo", required = false) Integer pageNo,
+                                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize)
+    {
+        try{
+            List<StockTransactionDTO>  stockTransactionDTOList=stockTransactionService.getByUserIdAndProductId(userId,userProductId,pageNo,pageSize);
+            ResponsingDTO  responsingDTO=new ResponsingDTO("Get All StockTransaction",stockTransactionDTOList,false);
+            return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
+
+        }
+        catch (UserIdNotFound e) {
+            ResponsingDTO responsingDTO = new ResponsingDTO( e.getMessage(),null,true);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
+        }
+        catch (UserProductIdNotFound e) {
+            ResponsingDTO responsingDTO = new ResponsingDTO( e.getMessage(),null,true);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responsingDTO);
+        }
+        catch (Exception e) {
+        ResponsingDTO responsingDTO = new ResponsingDTO( e.getMessage(),null,true);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responsingDTO);
+    }
+
+    }
+
 
     @GetMapping("/GetAllStockTransaction")
     public ResponseEntity<ResponsingDTO> getAllStockTransaction(
@@ -114,6 +146,45 @@ public class StockTransactionController {
     public ResponseEntity<ResponsingDTO> stockTransactionService(@RequestParam Integer transactionId){
         try{
             StockTransactionDTO stockTransactionDTO= stockTransactionService.getByIdStockTransaction(transactionId);
+            ResponsingDTO responsingDTO= new ResponsingDTO(" Get By Id Data Successfully",stockTransactionDTO,false);
+            return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
+        }catch (Exception e){
+            ResponsingDTO responsingDTO= new ResponsingDTO(e.getMessage(),null,true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsingDTO);
+        }
+    }
+
+
+
+    @GetMapping("/ByDateRange")
+    public ResponseEntity<ResponsingDTO> getByDateRange( @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+                                                        @RequestParam(value = "pageNo", required = false) Integer pageNo,
+                                                        @RequestParam(value = "pageSize", required = false) Integer pageSize){
+        try{
+
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//            LocalDateTime start = LocalDateTime.parse(startDate + " 00:00:00", formatter);
+//            LocalDateTime end = LocalDateTime.parse(endDate + " 23:59:59", formatter);
+
+
+            List<StockTransactionDTO> stockTransactionDTOList=stockTransactionService.getByDateRange(startDate,endDate,pageNo,pageSize);
+            ResponsingDTO responsingDTO= new ResponsingDTO(" Get By Id Data Successfully",stockTransactionDTOList,false);
+            return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
+        }
+        catch(Exception e){
+            ResponsingDTO responsingDTO= new ResponsingDTO(e.getMessage(),null,true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsingDTO);
+        }
+    }
+
+
+    @GetMapping("/GetByProductMasterId")
+    public ResponseEntity<ResponsingDTO> stockTransactionByProductMasterId(@RequestParam Integer productMasterId,
+                                                                             @RequestParam(value = "pageNo", required = false) Integer pageNo,
+                                                                           @RequestParam(value = "pageSize", required = false) Integer pageSize){
+        try{
+           List< StockTransactionDTO> stockTransactionDTO= stockTransactionService.getByProductMasterId(productMasterId,pageNo,pageSize);
             ResponsingDTO responsingDTO= new ResponsingDTO(" Get By Id Data Successfully",stockTransactionDTO,false);
             return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
         }catch (Exception e){

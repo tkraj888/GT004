@@ -4,7 +4,12 @@ import com.spring.jwt.entity.StockTransaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Repository
 public interface StockTransactionRepo extends JpaRepository<StockTransaction,Integer> {
@@ -15,4 +20,11 @@ public interface StockTransactionRepo extends JpaRepository<StockTransaction,Int
             Integer productMasterId,
             Integer userProductId
     );
+
+    Page<StockTransaction> findByUserIdAndUserProduct01_UserProductId(Integer userId,Integer userProductId,Pageable pageable);
+
+    @Query("SELECT s FROM StockTransaction s WHERE s.transactionDate BETWEEN :startDate AND :endDate")
+    Page<StockTransaction> getByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
+
+    Page<StockTransaction> findByProductMasterId(Integer productMasterId, Pageable pageable);
 }
