@@ -1,5 +1,6 @@
 package com.spring.jwt.productMaster;
 
+import com.spring.jwt.entity.ProductMaster;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface ProductMasterService {
     List<ProductMasterDTO> getAllProducts(Integer pageNo, Integer pageSize);
 
     void deleteProductByID(Integer id);
+
+    public List<ProductMasterDTO> getProductByBrandAndName(String brand, String name);
+
+
 }
