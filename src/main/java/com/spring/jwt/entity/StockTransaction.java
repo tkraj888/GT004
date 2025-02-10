@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,7 +23,7 @@ public class StockTransaction {
     private Long transactionId;
 
     @Column(nullable = false)
-    private Integer masterId;
+    private Integer productMasterId;
 
     @Column(nullable = false)
     private String name;
@@ -46,10 +48,10 @@ public class StockTransaction {
     private Integer quantity760ml;
 
     @Column(nullable = false)
-    private Integer quantity1Liter;
+    private String quantity1Liter;
 
     @Column(nullable = false)
-    private Integer quantity2Liter;
+    private String quantity2Liter;
 
     @Column(nullable = false)
     private LocalDateTime transactionDate;
@@ -62,6 +64,13 @@ public class StockTransaction {
 
     @Column(length = 255)
     private Integer userId;
+
+    @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
+    private String mainType;
+
 
     @ManyToOne
     @JoinColumn(name = "userProductId")

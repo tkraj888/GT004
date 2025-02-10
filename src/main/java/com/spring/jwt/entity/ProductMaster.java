@@ -15,7 +15,7 @@ public class ProductMaster {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer masterId;
+    private Integer productMasterId;
 
     @Column(nullable = false)
     private String name;
