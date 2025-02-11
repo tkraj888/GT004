@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface StockTransactionRepo extends JpaRepository<StockTransaction,Integer> {
@@ -20,6 +21,8 @@ public interface StockTransactionRepo extends JpaRepository<StockTransaction,Int
             Integer productMasterId,
             Integer userProductId
     );
+
+
 
 
     Page<StockTransaction> findByUserIdAndUserProduct01_UserProductId(Integer userId,Integer userProductId,Pageable pageable);
@@ -38,10 +41,11 @@ public interface StockTransactionRepo extends JpaRepository<StockTransaction,Int
     );
 
     @Query("SELECT s FROM StockTransaction s WHERE s.userId = :userId AND s.transactionDate = :date")
-    Page<StockTransaction> getStockTransactionByIdAndDate(@Param("userId") Integer id, @Param("date") LocalDateTime date, Pageable pageable);
+    Page<StockTransaction> getStockTransactionByIdAndDate(@Param("userId") Integer userId, @Param("date") LocalDateTime date, Pageable pageable);
 
 
     @Query("SELECT s FROM StockTransaction s WHERE s.billNo = :billNo")
     Page<StockTransaction> getStockTransactionByBillNo(@Param("billNo") String billNo, Pageable pageable);
 
+    Page<StockTransaction> findByUserId(Integer userId,Pageable pageable);
 }
