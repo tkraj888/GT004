@@ -1,4 +1,5 @@
 package com.spring.jwt.entity;
+import com.spring.jwt.productMaster.ProductMasterDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,6 @@ import lombok.Builder;
 @Entity
 @Table(name = "product_master")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ProductMaster {
@@ -47,4 +47,21 @@ public class ProductMaster {
     @Column(nullable = false)
     private String mainType;
 
+
+    public ProductMaster() {
+    }
+
+    public ProductMaster(ProductMasterDTO productMasterDTO) {
+        this.productMasterId = productMasterDTO.getProductMasterId();
+        this.name = productMasterDTO.getName();
+        this.brand = productMasterDTO.getBrand();
+        this.stock90ml = productMasterDTO.getStock90ml();
+        this.stock180ml = productMasterDTO.getStock180ml();
+        this.stock360ml = productMasterDTO.getStock360ml();
+        this.stock760ml = productMasterDTO.getStock760ml();
+        this.stock1Liter = productMasterDTO.getStock1Liter();
+        this.stock2Liter = productMasterDTO.getStock2Liter();
+        this.type = productMasterDTO.getType();
+        this.mainType = productMasterDTO.getMainType();
+    }
 }

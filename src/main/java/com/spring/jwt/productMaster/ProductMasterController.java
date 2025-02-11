@@ -102,4 +102,22 @@ public class  ProductMasterController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
+
+    @GetMapping("/searchByBrandAndName")
+    public ResponseEntity<ResponseAllProductMaster> getProductsByBrandAndName(
+            @RequestParam String brand, @RequestParam String name) {
+        try {
+            List<ProductMasterDTO> productDTOs = productMasterService.getProductByBrandAndName(brand, name);
+            ResponseAllProductMaster response = new ResponseAllProductMaster("Products retrieved successfully", productDTOs, null);
+            return ResponseEntity.ok(response);
+        } catch (ProductMasterIdNotFound e) {
+            ResponseAllProductMaster response = new ResponseAllProductMaster(e.getMessage(), null, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            ResponseAllProductMaster response = new ResponseAllProductMaster("Error: " + e.getMessage(), null, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
 }
