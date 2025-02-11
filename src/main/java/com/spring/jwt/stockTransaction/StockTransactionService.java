@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface StockTransactionService  {
-    StockTransactionDTO getStockTransactionByUserID(Integer userId); // list
+   List< StockTransactionDTO> getStockTransactionByUserID(Integer userId,Integer pageNo,Integer pageSize); // list
+
 
     List<StockTransactionDTO> getStockTansactionByUserProductID(Integer userProductId, Integer pageNo, Integer pageSize);
 
@@ -27,12 +28,12 @@ public interface StockTransactionService  {
     List<StockTransactionDTO>  getByProductMasterId(Integer productMasterId,Integer pageNo, Integer pageSize );
 
 
-    Page<StockTransactionDTO> getStockTransactionByDateRange(Integer id, LocalDateTime startDate, LocalDateTime endDate, Integer pageNo, Integer pageSize);
+    Page<StockTransactionDTO> getStockTransactionByDateRange(Integer userId, LocalDateTime startDate, LocalDateTime endDate, Integer pageNo, Integer pageSize);
 
 
-    List<StockTransactionDTO> getStockTransactionByIdAndDate(Integer id, LocalDateTime date, Integer pageNo, Integer pageSize); //only one
+    List<StockTransactionDTO> getStockTransactionByIdAndDate(Integer userId, LocalDateTime date, Integer pageNo, Integer pageSize); //only one
 
 
-    List<StockTransactionDTO> getStockTransactionByBillNo(String billNo, Integer pageNo, Integer pageSize);// page not req
+    List<StockTransactionDTO> getStockTransactionByBillNo(String billNo);// page not req
 
 }

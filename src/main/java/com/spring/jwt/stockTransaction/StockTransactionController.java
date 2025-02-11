@@ -27,9 +27,11 @@ public class StockTransactionController {
     private StockTransactionService stockTransactionService;
 
     @GetMapping("/getStockTransactionByUserID ")
-    public ResponseEntity<ResponsingDTO> getStockTransactionByUserID(@RequestParam Integer userId) {
+    public ResponseEntity<ResponsingDTO> getStockTransactionByUserID(@RequestParam Integer userId,
+                                                                     @RequestParam(required = false) Integer pageNo,
+                                                                     @RequestParam(required = false) Integer pageSize) {
         try {
-            StockTransactionDTO stockTransactionDTO = stockTransactionService.getStockTransactionByUserID(userId);
+            List<StockTransactionDTO> stockTransactionDTO = stockTransactionService.getStockTransactionByUserID(userId,pageNo,pageSize);
             ResponsingDTO responsingDTO = new ResponsingDTO(" Stock Transaction By using User ID ", stockTransactionDTO, false);
             return ResponseEntity.status(HttpStatus.FOUND).body(responsingDTO);
         } catch (StockTransactionIdNotFound e) {
@@ -180,7 +182,7 @@ public class StockTransactionController {
         } catch (DateNotFoundException | UserIdNotFound e) {
             return ResponseEntity.badRequest().body(new ResponsingDTO(e.getMessage(), null, true));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponsingDTO("Internal Server Error", null, true));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponsingDTO(e.getMessage(), null, true));
 
         }
     }
@@ -252,9 +254,9 @@ public class StockTransactionController {
     }
 
     @GetMapping("/getStockTransactionByBillNo")
-    public ResponseEntity<ResponsingDTO> getStockTransactionByBillNo(@RequestParam String billNo,@RequestParam(required = false) Integer pageNo, @RequestParam(required = false) Integer pageSize){
+    public ResponseEntity<ResponsingDTO> getStockTransactionByBillNo(@RequestParam String billNo){
         try {
-            List<StockTransactionDTO> stockTransactionDTO = stockTransactionService.getStockTransactionByBillNo(billNo,pageNo,pageSize);
+            List<StockTransactionDTO> stockTransactionDTO = stockTransactionService.getStockTransactionByBillNo(billNo);
             ResponsingDTO responsingDTO = new ResponsingDTO("Get getStockTransactionByBillNo Successfully", stockTransactionDTO, false);
             return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
         }catch (DateNotFoundException | UserIdNotFound e) {
