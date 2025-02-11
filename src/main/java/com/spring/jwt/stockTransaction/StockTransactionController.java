@@ -252,9 +252,9 @@ public class StockTransactionController {
     }
 
     @GetMapping("/getStockTransactionByBillNo")
-    public ResponseEntity<ResponsingDTO> getStockTransactionByBillNo(@RequestParam String billNo,@RequestParam(required = false) Integer pageNo, @RequestParam(required = false) Integer pageSize){
+    public ResponseEntity<ResponsingDTO> getStockTransactionByBillNo(@RequestParam String billNo){
         try {
-            List<StockTransactionDTO> stockTransactionDTO = stockTransactionService.getStockTransactionByBillNo(billNo,pageNo,pageSize);
+            List<StockTransactionDTO> stockTransactionDTO = stockTransactionService.getStockTransactionByBillNo(billNo);
             ResponsingDTO responsingDTO = new ResponsingDTO("Get getStockTransactionByBillNo Successfully", stockTransactionDTO, false);
             return ResponseEntity.status(HttpStatus.OK).body(responsingDTO);
         }catch (DateNotFoundException | UserIdNotFound e) {

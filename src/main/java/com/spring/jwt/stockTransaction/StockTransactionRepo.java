@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface StockTransactionRepo extends JpaRepository<StockTransaction,Integer> {
@@ -42,6 +43,6 @@ public interface StockTransactionRepo extends JpaRepository<StockTransaction,Int
 
 
     @Query("SELECT s FROM StockTransaction s WHERE s.billNo = :billNo")
-    Page<StockTransaction> getStockTransactionByBillNo(@Param("billNo") String billNo, Pageable pageable);
+    List<StockTransaction> getStockTransactionByBillNo(@Param("billNo") String billNo);
 
 }
