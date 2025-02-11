@@ -34,6 +34,6 @@ public interface StockTransactionService  {
     List<StockTransactionDTO> getStockTransactionByIdAndDate(Integer userId, LocalDateTime date, Integer pageNo, Integer pageSize); //only one
 
 
-    List<StockTransactionDTO> getStockTransactionByBillNo(String billNo, Integer pageNo, Integer pageSize);// page not req
+    List<StockTransactionDTO> getStockTransactionByBillNo(String billNo);// page not req
 
 }

@@ -169,8 +169,6 @@ public class StockTransactionServiceImpl implements StockTransactionService{
 
             }
 
-
-
         StockTransaction transaction2=stockTransactionRepo.findByUserIdAndProductMasterIdAndUserProduct01_UserProductId(transaction1.getUserId(),transaction1.getProductMasterId(),transaction1.getUserProduct01().getUserProductId());
 
         if(transaction2!=null){
@@ -436,17 +434,11 @@ public class StockTransactionServiceImpl implements StockTransactionService{
     }
 
     @Override
-    public List<StockTransactionDTO> getStockTransactionByBillNo(String billNo, Integer pageNo, Integer pageSize) {
-
-        int defaultPageNo =(pageNo==null || pageSize < 1)? 0 : pageNo-1;
-        int defaultPageSize=(pageSize == null || pageSize < 1) ? 5 : pageSize;
-
-        Pageable pageable= PageRequest.of(defaultPageNo,defaultPageSize);
-
-        Page<StockTransaction> stockTransactions= stockTransactionRepo.getStockTransactionByBillNo(billNo,pageable);
+    public List<StockTransactionDTO> getStockTransactionByBillNo(String billNo) {
+        List<StockTransaction> stockTransactions= stockTransactionRepo.getStockTransactionByBillNo(billNo);
 
         List<StockTransactionDTO> stockTransactionDTOs = new ArrayList<>();
-        for (StockTransaction stockTransaction : stockTransactions.getContent()) {
+        for (StockTransaction stockTransaction : stockTransactions) {
             StockTransactionDTO dto = new StockTransactionDTO();
             dto.setTransactionId(stockTransaction.getTransactionId());
             dto.setProductMasterId(stockTransaction.getProductMasterId());
@@ -468,9 +460,9 @@ public class StockTransactionServiceImpl implements StockTransactionService{
             dto.setUserProductId(stockTransaction.getUserProduct01().getUserProductId());
             stockTransactionDTOs.add(dto);
         }
+
         return stockTransactionDTOs;
     }
-
 
 }
 

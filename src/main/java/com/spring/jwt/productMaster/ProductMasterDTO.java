@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 @Data
-
 @AllArgsConstructor
 @Builder
 public class ProductMasterDTO {
